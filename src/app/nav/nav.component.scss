@@ -1,0 +1,58 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+img {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.logo {
+  margin-right: 40px;
+}
+
+.nav-link {
+  /* border-left: solid lightgray 1px; */
+}
+
+.active {
+  background-color: rgba(0,0,0,.12);
+}
+
+.login {
+  line-height: 20px;
+  color: wheat;
+}
+
+.logout {
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.beta {
+  background-color: #448aff;
+  padding: 2px 5px;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ff9800;
+  margin-top: -3px;
+  border-radius: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 20px;
+}

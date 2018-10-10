@@ -1,0 +1,54 @@
+<div class="container">
+
+  <div class="alert" *ngIf="message">
+    {{message}}
+  </div>
+
+  <mat-tab-group [selectedIndex]="selected" (selectedIndexChange)="tabChanged($event)">
+    <mat-tab label="Form">
+        <mat-form-field>
+            <input matInput [(ngModel)]="config.apiKey" placeholder="API Key" name="apiKey">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput [(ngModel)]="config.authDomain" placeholder="Auth Domain" name="authDomain">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput [(ngModel)]="config.databaseURL" placeholder="Database URL" name="databaseURL">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput [(ngModel)]="config.projectId" placeholder="Project ID" name="projectId">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput [(ngModel)]="config.storageBucket" placeholder="Storage Bucket" name="storageBucket">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput [(ngModel)]="config.messagingSenderId" placeholder="Messaging Sender ID" name="messagingSenderId">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <mat-select [(value)]="config.type" placeholder="Type" name="type">
+              <mat-option value="realtime">Realtime</mat-option>
+              <mat-option value="firestore">Firestore</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </mat-tab>
+    <mat-tab label="JSON">
+      <mat-form-field>
+        <textarea [(ngModel)]="json" matInput placeholder="Paste your Firebase connection settings here"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(value)]="config.type" placeholder="Type" name="type">
+          <mat-option value="realtime">Realtime</mat-option>
+          <mat-option value="firestore">Firestore</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-tab>
+  </mat-tab-group>
+
+  <button (click)="connect()" mat-raised-button color="primary">Connect</button>
+</div>

@@ -1,0 +1,37 @@
+<div class="container">
+
+  <div class="alert" *ngIf="message">
+    {{message}}
+  </div>
+
+  <div *ngIf="!isLoggedIn">
+    <h3>
+      Sign In
+    </h3>
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Email">
+        <mat-form-field>
+          <input matInput [(ngModel)]="email" placeholder="Email" name="email">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <input matInput [(ngModel)]="password" placeholder="Password" name="pass" type="password" (keyup.enter)="signIn()">
+        </mat-form-field>
+      
+        <button (click)="signIn()" mat-raised-button color="primary">Sign In</button>
+      </mat-tab>
+      <mat-tab label="Google">
+        <button (click)="googleSignIn()" mat-raised-button color="primary">Sign in with Google</button>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div *ngIf="isLoggedIn" class="logout">
+    <div>
+      <span>User</span>
+      <span>{{user.email}}</span>
+    </div>
+    <button (click)="signOut()" mat-raised-button color="primary">Sign Out</button>
+  </div>
+
+</div>

@@ -1,0 +1,110 @@
+<mat-sidenav-container>
+
+  <!-- Left Drawer Filters -->
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')" (closed)="events.push('close!')">
+    <div class="filter">
+      <mat-form-field>
+        <mat-select [(value)]="filter.field" placeholder="Field" (selectionChange)="onChangeFilter($event.value)">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let f of fields" [value]="f">{{f}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field *ngIf="filter.field" class="oper">
+        <mat-select [(value)]="filter.oper" placeholder="Type">
+          <mat-option value="eq">Equals</mat-option>
+          <mat-option value="gt">Greater Than</mat-option>
+          <mat-option value="lt">Less Than</mat-option>
+          <mat-option value="bt">Between</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field *ngIf="filter.oper != 'bt' && filter.field && !filter.isDate">
+        <input matInput [(ngModel)]="filter.val" placeholder="Value">
+      </mat-form-field>
+  
+      <mat-form-field *ngIf="filter.oper != 'bt' && filter.field && filter.isDate" class="date">
+        <input matInput [(ngModel)]="filter.dateVal" [matDatepicker]="date" placeholder="Date" (dateChange)="dateChange('val', $event)">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </mat-form-field>
+  
+      <span class="range" *ngIf="filter.oper == 'bt' && filter.field && !filter.isDate">
+        <mat-form-field>
+          <input matInput [(ngModel)]="filter.val" name="filter" placeholder="Start">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [(ngModel)]="filter.val2" name="filter2" placeholder="End">
+        </mat-form-field>
+      </span>
+  
+      <span class="range" *ngIf="filter.oper == 'bt' && filter.field && filter.isDate" class="date">
+        <mat-form-field>
+          <input matInput [matDatepicker]="startDate" placeholder="Start date" (dateChange)="dateChange('val', $event)">
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="endDate" placeholder="End date" (dateChange)="dateChange('val2', $event)">
+          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+      </span>
+  
+      <span class="filter-actions">
+        <button (click)="doFilter()" mat-button *ngIf="filter.field && filter.oper != 'bt'" [disabled]="filter.val == ''">Apply</button>
+        <button (click)="doFilter()" mat-button *ngIf="filter.field && filter.oper == 'bt'" [disabled]="filter.val == '' || filter.val2 == ''">Apply</button>
+        <button (click)="clear()" mat-button *ngIf="filter.field" [disabled]="filter.val == ''">Clear</button>
+      </span>
+
+    </div>
+  </mat-sidenav>
+  
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <section class="drill">
+      <mat-form-field class="path">
+        <input matInput [(ngModel)]="path" placeholder="Path" (keyup.enter)="drill()">
+      </mat-form-field>
+      <button (click)="drill()" mat-raised-button color="primary" [disabled]="!path">Drill</button>
+      <button (click)="openSettings()" mat-icon-button [disabled]="!path">
+        <mat-icon aria-label="Settings">settings</mat-icon>
+      </button>
+      <mat-form-field class="limit">
+        <mat-select [(value)]="limit" placeholder="Limit" (selectionChange)="onChangeLimit($event.value)">
+          <mat-option value="10">10</mat-option>
+          <mat-option value="50">50</mat-option>
+          <mat-option value="100">100</mat-option>
+          <mat-option value="250">250</mat-option>
+          <mat-option value="500">500</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <div>
+      <p class="actions">
+        <button mat-button (click)="sidenav.toggle()">{{opened ? 'Hide' : 'Show'}} Filters</button>
+        <span>
+          <span class="sort">
+            <button mat-button (click)="toggleSort()" [disabled]="results.length === 0">Sort</button>
+            <div *ngIf="sort.show" class="mat-elevation-z8">
+              <div (click)="doSort(f)" class="dropdown-item" [ngClass]="{'selected': f.selected}" *ngFor="let f of sort.fields">
+                <span>{{f.name}}</span>
+                <mat-icon *ngIf="f.selected && (f.direction === 'asc' || f.direction === undefined)">arrow_drop_up</mat-icon>
+                <mat-icon *ngIf="f.selected && (f.direction === 'desc')">arrow_drop_down</mat-icon>
+              </div>
+            </div>
+          </span>
+          <button mat-button (click)="export()" [disabled]="results.length === 0">Export</button>
+          <span>
+            <label class="custom-file-upload mat-button" [ngClass]="{'disabled': path === '' || path == undefined}">
+              <input type="file" accept=".csv" [disabled]="!path" (change)="importSelected($event.target.files)">
+                Import
+            </label>
+          </span>
+          <button *ngIf="selected.length > 0" mat-button color="warn" (click)="delete()">Delete</button>
+        </span>
+      </p>
+      <ff-card-results [results]="results" (filter)="onFilter($event)" (selected)="onSelect($event)"></ff-card-results>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

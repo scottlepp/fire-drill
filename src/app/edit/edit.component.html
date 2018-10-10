@@ -1,0 +1,6 @@
+<form class="container">
+  <mat-form-field class="example-full-width" *ngFor="let key of keys(item)">
+    <input matInput [placeholder]="key" [(ngModel)]="item[key]" [name]="key">
+  </mat-form-field>
+  <button (click)="save()" mat-raised-button color="primary" *ngIf="keys(item).length > 0">Save</button>
+</form>

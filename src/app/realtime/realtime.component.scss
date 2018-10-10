@@ -1,0 +1,62 @@
+section {
+  padding: 20px 20px 0px 20px;
+}
+
+.drill {
+  text-align: center;
+}
+
+.path {
+  padding-left: 95px;  //offset for the limit dropdown width + padding
+  width: 25%;
+}
+
+// .filter {
+//   text-align: center;
+// }
+
+.limit {
+  float: right;
+  max-width: 75px;
+}
+
+mat-option {
+  text-transform: capitalize;
+}
+mat-select {
+  text-transform: capitalize;
+}
+
+mat-form-field {
+  padding-right: 20px;
+}
+
+.oper {
+  max-width: 120px;
+}
+
+.range > mat-form-field {
+  max-width: 100px;
+}
+
+.range > mat-form-field:last-child {
+  padding-left: 20px;
+}
+
+.actions {
+  padding-top: 10px;
+  margin-bottom: -10px;
+}
+
+.custom-file-upload {
+  &.disabled {
+    cursor: not-allowed;
+  }
+  &:hover {
+    background-color: rgba(0,0,0,.12);
+  }
+}
+
+input[type="file"] {
+  display: none;
+}

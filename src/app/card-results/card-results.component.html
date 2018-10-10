@@ -1,0 +1,79 @@
+<div class="container">
+  <mat-card class="card" [ngClass]="{'selected': item.selected}" *ngFor="let item of results" (click)="onSelect(item, $event.target)">
+    <mat-card-content>
+      <!-- <div class="field" *ngFor="let key of keys(item)" [hidden]="key == 'key'">
+        <span class="label">{{key}}:</span>
+        <span *ngIf="!isDate(item[key]); else date">{{item[key]}}</span>
+        <ng-template #date>
+          <span>{{item[key] | date:'short'}}</span>
+        </ng-template>
+      </div> -->
+      <div class="field" *ngFor="let field of item.fields; let i = index">
+        <div *ngIf="!item.$edit; else edit" class="field-read">
+          <span class="label">{{field.name}}</span>
+          <a (click)="onFilter(field)" href="javascript:;" *ngIf="!field.isDate && !field.isObject">
+            <span>{{field.value}}</span>
+            <!-- <ng-template #drill>
+              <div *ngFor="let child of field.children">
+                  <span class="label">{{child.name}}</span>
+              </div> -->
+              <!-- <button (click)="drillDown(item)" mat-raised-button color="accent" class="drill-button">Drill</button> -->
+            <!-- </ng-template> -->
+          </a>
+          <span *ngIf="field.isDate && !field.isObject">
+            <a (click)="onFilter(field)" href="javascript:;">{{field.value | date:'shortDate'}}</a>
+          </span>
+          <div *ngIf="field.isObject && !field.isRef" class="child">
+            <div *ngFor="let child of field.children">
+              <span class="label">{{child.name}}</span>
+              <a (click)="onFilter(child)" href="javascript:;" *ngIf="!child.isDate && !child.isObject">
+                <span>{{child.value}}</span>
+              </a>
+              <a (click)="onFilter(child)" href="javascript:;" *ngIf="child.isDate && !child.isObject">{{child.value | date:'shortDate'}}</a>
+            </div>
+          </div>
+          <div *ngIf="field.isObject && field.isRef" class="child" [ngClass]="{'drill-button' : !field.drilled}">
+            <div *ngFor="let child of field.children">
+              <span class="label">{{child.name}}</span>
+              <a (click)="onFilter(child)" href="javascript:;" *ngIf="!child.isDate && !child.isObject">
+                <span>{{child.value}}</span>
+              </a>
+              <a (click)="onFilter(child)" href="javascript:;" *ngIf="child.isDate && !child.isObject">{{child.value | date:'shortDate'}}</a>
+            </div>
+            <a *ngIf="!field.drilled" (click)="drillDown(field)" mat-raised-button color="accent" class="drill-button">Drill</a>
+          </div>
+        </div>
+        <ng-template #edit>
+          <mat-form-field *ngIf="!field.isDate && !field.isObject">
+            <input matInput [(ngModel)]="item.editFields[i].value" [placeholder]="field.name" (focus)="onFocus(item)">
+          </mat-form-field>
+          <mat-form-field *ngIf="field.isDate">
+            <input matInput [(ngModel)]="item.editFields[i].value" [matDatepicker]="date" [placeholder]="field.name" (dateChange)="dateChange(item, i, $event)" (focus)="onFocus(item)">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+          </mat-form-field>
+          <div *ngIf="field.isObject && !field.isRef" class="child-edit">
+            <span class="label">{{field.name}}</span>
+            <div *ngFor="let child of field.children; let j = index">
+              <mat-form-field *ngIf="!child.isDate">
+                <input matInput [(ngModel)]="item.editFields[i].children[j].value" [placeholder]="child.name" (focus)="onFocus(item)">
+              </mat-form-field>
+              <mat-form-field *ngIf="child.isDate">
+                <input matInput [(ngModel)]="item.editFields[i].children[j].value" [matDatepicker]="date" [placeholder]="child.name" (dateChange)="dateChangeChild(item, i, j, $event)" (focus)="onFocus(item)">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="!item.$edit" (click)="edit(item)" mat-button>EDIT</button>
+      <button *ngIf="!item.$edit" (click)="clone(item)" mat-button>CLONE</button>
+      <button *ngIf="item.$edit" (click)="save(item)" mat-button>SAVE</button>
+      <button *ngIf="item.$edit" (click)="cancel(item)" mat-button>CANCEL</button>
+      <!-- <button mat-button>DRILL</button> -->
+    </mat-card-actions>
+  </mat-card>
+</div>

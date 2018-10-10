@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "public": "dist/fire-drill",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [ {
+      "source": "**",
+      "destination": "/index.html"
+    } ]
+  }
+}

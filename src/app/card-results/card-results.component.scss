@@ -1,0 +1,132 @@
+.card {
+  max-width: 400px;
+}
+
+// .example-header-image {
+//   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+//   background-size: cover;
+// }
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 30px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 620px) {
+  .container {
+    column-count: 3;
+    column-gap: 20px;
+  }
+  
+  section {
+    break-inside: avoid;
+  }
+}
+
+@media (min-width: 840px) {
+  .container {
+     column-count: 4;
+  }
+}
+
+@media (min-width: 1060px) {
+  .container {
+     column-count: 6;
+  }
+}
+
+.field {
+  padding-bottom: 5px;
+  .drill-button {
+    padding: 0 0px;
+    line-height: 24px;
+    min-width: 40px;
+  }
+}
+.field > span {
+  width: 50%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.field > a {
+  width: 50%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-read {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.label {
+  // text-align: right;
+  text-transform: capitalize;
+  font-weight: 500;
+  // padding-right: 20px;
+  width: 50%;
+  display: inline-block;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.mat-card {
+  position: relative;
+  cursor: pointer;
+}
+.mat-card-content {
+  margin-bottom: 20px;
+}
+.mat-card-actions {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  background-color: whitesmoke;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+.mat-card>.mat-card-actions:last-child {
+  /* margin-bottom: -16px; */
+  margin-bottom: 0;
+  padding-bottom: 0;
+  bottom: 0;
+}
+
+.selected {
+  box-shadow: 0px 2px 2px 2px #448aff, 2px 2px 2px 4px #448aff, 0px 0px 0px 6px #448aff !important;
+}
+
+.child {
+  // border-top: 1px solid lightgray;
+  /* border-bottom: 1px solid lightgray; */
+  padding: 2px 0 2px 0px;
+  .label {
+    padding-left: 10px;
+  }
+}
+
+.child-edit {
+  > div {
+    padding-left: 10px;
+  }
+}
+
+.drill-button {
+  display: inline-block;
+}

@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" class="mat-elevation-z3">
+
+  <img src="assets/img/drill.png" alt="">
+  <span class="logo">
+    FireDrill
+    <span class="beta">BETA</span>
+  </span>
+
+  <span class="nav-link">
+    <a routerLink="/connect" routerLinkActive="active"
+      type="button" aria-label="Connect" mat-button>
+      Connect
+    </a>
+  </span>
+  <span class="nav-link" routerLinkActive="active">
+      <a routerLink="/drill" routerLinkActive="active"
+      type="button" aria-label="Drill" mat-button>
+      Drill
+    </a>
+  </span>
+  <span class="spacer"></span>
+  <a routerLink="/user" *ngIf="user.email" class="logout">
+    <mat-icon [matTooltip]="user.email" matTooltipPosition="before">verified_user</mat-icon>
+  </a>
+  <a routerLink="/user" *ngIf="!user.email" class="login">
+    <mat-icon [matTooltip]="'Sign In'" matTooltipPosition="before">person_outline</mat-icon>
+  </a>
+  <!-- TBD -->
+  <!-- <span class="nav-link" routerLinkActive="active">
+      <a routerLink="/charts" routerLinkActive="active"
+      type="button" aria-label="Charts" mat-button>
+      Charts
+    </a>
+  </span> -->
+</mat-toolbar>
+<!-- Add Content Here -->
+<router-outlet></router-outlet>
+
