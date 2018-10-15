@@ -26,6 +26,7 @@ export class FirestoreComponent implements OnInit {
   selected = [];
   fieldSettings = {};
   sort = {show: false, fields: []};
+  view = {show: false, value: 'card', types: [{name: 'card', selected: false}, {name: 'table', selected: false}]};
 
   constructor(
     private data: DataService,
@@ -83,6 +84,10 @@ export class FirestoreComponent implements OnInit {
     });
   }
 
+  toggleView() {
+    this.view.show = !this.view.show;
+  }
+
   toggleSort() {
     this.sort.show = !this.sort.show;
   }
@@ -93,6 +98,18 @@ export class FirestoreComponent implements OnInit {
       if (this.sort.show) {
         this.sort.show = false;
       }
+    }
+    if (event.target.innerText !== 'View') {
+      if (this.view.show) {
+        this.view.show = false;
+      }
+    }
+  }
+
+  switchView(view) {
+    this.view.value = view.name;
+    for (const v of this.view.types) {
+      v.selected = v.name === view.name;
     }
   }
 

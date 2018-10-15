@@ -85,6 +85,15 @@
         <button mat-button (click)="sidenav.toggle()">{{opened ? 'Hide' : 'Show'}} Filters</button>
         <span>
           <span class="sort">
+            <button mat-button (click)="toggleView()" [disabled]="results.length === 0">View</button>
+            <div *ngIf="view.show" class="mat-elevation-z8">
+              <div (click)="switchView(v)" class="dropdown-item" [ngClass]="{'selected': v.selected}" *ngFor="let v of view.types">
+                <span>{{v.name}}</span>
+                <mat-icon *ngIf="v.selected">done</mat-icon>
+              </div>
+            </div>
+          </span>
+          <span class="sort">
             <button mat-button (click)="toggleSort()" [disabled]="results.length === 0">Sort</button>
             <div *ngIf="sort.show" class="mat-elevation-z8">
               <div (click)="doSort(f)" class="dropdown-item" [ngClass]="{'selected': f.selected}" *ngFor="let f of sort.fields">
@@ -104,7 +113,11 @@
           <button *ngIf="selected.length > 0" mat-button color="warn" (click)="delete()">Delete</button>
         </span>
       </p>
-      <ff-card-results [results]="results" (filter)="onFilter($event)" (selected)="onSelect($event)"></ff-card-results>
+      <!-- Results -->
+      <section>
+        <ff-card-results *ngIf="view.value ==='card'" [results]="results" (filter)="onFilter($event)" (selected)="onSelect($event)"></ff-card-results>
+        <ff-table-results *ngIf="view.value ==='table'" [results]="results" (filter)="onFilter($event)" ></ff-table-results>
+      </section>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

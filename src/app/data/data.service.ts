@@ -121,6 +121,26 @@ export class DataService {
     }
   }
 
+  saveTableItem(item) {
+    setTimeout(() => {
+      item.selected = false;
+    }, 100);
+    for (const key in item.editFields) {
+      if (true) {
+        this.bindFormField(item.item, item.editFields[key]);
+      }
+    }
+    item.fields = item.fields.map(f => Object.assign(f, item.editFields[f.name]));
+    if (!item.$clone) {
+      return this.save(item.item).then(saved => {
+        item.$edit = false;
+        delete item.editFields;
+      });
+    } else {
+      return this.addItem(item);
+    }
+  }
+
   addAll(items) {
     return this.database().addAll(items, this.path);
   }
@@ -160,29 +180,37 @@ export class DataService {
     const items = [];
     for (const result of results) {
       const fields = this.getFields(result);
-      items.push({item: result, fields: fields});
+      items.push({item: result, fields: fields.list, map: fields.map});
     }
     return items;
   }
 
   public getFields(result, parent?, collection?) {
+    const fieldMap = {};
     const fields = [];
     for (const key in result) {
       if (!key.startsWith('$') && key !== 'key') {
         const value = result[key];
+        let field;
         if (typeof value !== 'object') {
           let isDate = this.util.isDate(result[key]);
           if (this.fieldSettings[key] !== undefined) {
             isDate = this.fieldSettings[key].isDate;
           }
-          fields.push({name: key, value: result[key], isDate: isDate, parent: parent, collection: collection});
+          field = {name: key, value: result[key], isDate: isDate, parent: parent, collection: collection};
+          fields.push(field);
+          fieldMap[key] = field;
         } else {
           if (result.path === undefined) {
             const child = result[key];
             if (child.path === undefined) {
-              fields.push({name: key, value: result[key], isDate: false, isObject: true, children: this.getFields(child, key)});
+              field = {name: key, value: result[key], isDate: false, isObject: true, children: this.getFields(child, key).list};
+              fields.push(field);
+              fieldMap[key] = field;
             } else {
-              fields.push({name: key, value: result[key], isDate: false, isObject: true, children: [], isRef: true});
+              field = {name: key, value: result[key], isDate: false, isObject: true, children: [], isRef: true};
+              fields.push(field);
+              fieldMap[key] = field;
               // doc referenced in another collection
               // child.get().then(doc => {
               //   console.log(doc.data());
@@ -194,7 +222,7 @@ export class DataService {
         }
       }
     }
-    return fields;
+    return {list: fields, map: fieldMap};
   }
 
   private setFields(list) {
