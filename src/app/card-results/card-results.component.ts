@@ -116,7 +116,7 @@ export class CardResultsComponent implements OnInit {
     const collection = docRef.parent.path;
     docRef.get().then( doc => {
       const data = doc.data();
-      const fields = this.data.getFields(data, undefined, collection);
+      const fields = this.data.getFields(data, undefined, collection).list;
       field.children = fields;
       field.drilled = true;
     });

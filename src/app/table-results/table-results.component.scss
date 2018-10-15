@@ -1,0 +1,75 @@
+table {
+  width: 100%;
+  .mat-header-cell {
+    text-transform: capitalize;
+  }
+}
+
+th:last-child {
+  position: relative;
+}
+
+.toggle-column-pick {
+  /* float: right; */
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.toggle-edit {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: rgba(0, 0, 0, 0.54) !important;
+  display: none;
+}
+
+.cancel-icon {
+  @extend .toggle-edit;
+  top: 15px;
+  display: inline-block;
+  i {
+    font-size: 20px;
+  }
+}
+
+.save-icon {
+  @extend .cancel-icon;
+  right: 30px;
+}
+
+.column-pick {
+  position: absolute;
+  right: 15px;
+  margin-top: 5px;
+  background-color: white;
+  padding: 10px;
+  z-index: 1000;
+}
+
+tr {
+  td {
+    position: relative;
+    a {
+      color: rgba(0, 0, 0, 0.87);
+      text-decoration: none;
+    }
+  }
+  &:hover {
+    td {
+      background-color: whitesmoke;
+      a {
+        color: -webkit-link;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .toggle-edit, .save-icon, .cancel-icon {
+        display: inline-block;
+        i {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
