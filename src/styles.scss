@@ -2,3 +2,45 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.dropdown-item {
+  .mat-button-focus-overlay {
+    opacity: 0 !important;
+  }
+}
+
+@media print {
+  .drill, .mat-toolbar, .toggle-column-pick, .actions {
+    display: none;
+  }
+  .mat-toolbar.mat-primary {
+    display: none;
+  }
+  .results {
+    margin-top: 80px;
+  }
+  th {
+    -moz-box-shadow: inset 0 -10px 5px -10px #000000;
+    -webkit-box-shadow: inset 0 -10px 5px -10px #000000;
+    box-shadow: inset 0 -10px 5px -10px #000000;
+    border-bottom: 0 !important;
+  }
+  tr {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  tr:hover {
+    td {
+      background-color: unset !important;
+      a {
+        color: unset !important;
+        text-decoration: unset !important;
+      }
+    }
+  }
+  .toggle-edit {
+    display: none !important;
+  }
+  // main {
+  //   padding-top: 10px;
+  // }
+}

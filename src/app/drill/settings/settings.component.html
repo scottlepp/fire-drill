@@ -8,6 +8,14 @@
       <mat-checkbox class="example-margin" [(ngModel)]="field.isDate" (ngModelChange)="onChange()">Date</mat-checkbox>
     </span>
   </div>
+  <div *ngFor="let field of currency" class="fields">
+    <span>
+      {{field.name}}
+    </span>
+    <span>
+      <mat-checkbox class="example-margin" [(ngModel)]="field.isCurrency" (ngModelChange)="onChange()">Currency</mat-checkbox>
+    </span>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="true">Close</button>

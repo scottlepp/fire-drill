@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataService } from '../data/data.service';
 
@@ -7,7 +7,7 @@ import { DataService } from '../data/data.service';
   templateUrl: './table-results.component.html',
   styleUrls: ['./table-results.component.scss']
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent implements OnInit, OnChanges {
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;
 
@@ -20,23 +20,22 @@ export class ResultsComponent implements OnInit {
   displayedColumns: string[] = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
   fields = [];
+  fieldMap = {};
   loaded = true;
+  totals = {};
+  showTotals = false;
 
   constructor(private data: DataService) { }
 
   ngOnInit() {
-
     this.loaded = true;
-    const row = this.results[0];
-    this.displayedColumns = [];
-    for (const field of row.fields) {
-      // if (!field.isObject) {
-        this.displayedColumns.push(field.name);
-        const clone = Object.assign({selected: true}, field);
-        this.fields.push(clone);
-      // }
-    }
-    this.columnsToDisplay = this.displayedColumns.slice();
+    this.loadColumns();
+    this.calculateTotals();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.loadColumns();
+    this.calculateTotals();
   }
 
   onFilter(field) {
@@ -113,5 +112,35 @@ export class ResultsComponent implements OnInit {
     setTimeout(() => {
       item.selected = false;
     }, 100);
+  }
+
+  private loadColumns() {
+    const row = this.results[0];
+    this.displayedColumns = [];
+    this.fields = [];
+    for (const field of row.fields) {
+      // if (!field.isObject) {
+        this.displayedColumns.push(field.name);
+        const clone = Object.assign({selected: true}, field);
+        this.fields.push(clone);
+        this.fieldMap[field.name] = clone;
+      // }
+    }
+    this.columnsToDisplay = this.displayedColumns.slice();
+  }
+
+  private async calculateTotals() {
+    this.totals = {};
+    for (const result of this.results) {
+      const item = result.item;
+      for (const key in item) {
+        if (this.fieldMap[key] !== undefined && !this.fieldMap[key].isDate) {
+          if (item[key] !== undefined && !isNaN(item[key])) {
+            this.totals[key] = this.totals[key] || 0;
+            this.totals[key] += item[key];
+          }
+        }
+      }
+    }
   }
 }
