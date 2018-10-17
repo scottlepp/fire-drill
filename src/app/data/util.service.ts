@@ -18,7 +18,8 @@ export class UtilService {
 
   isDate(val) {
     if (!isNaN(val) && val.toString().indexOf('.') === -1) {
-      return val.toString().length === 13;
+      const len = val.toString().length;
+      return len > 10;
     } else {
       return false;
     }

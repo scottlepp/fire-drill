@@ -16,11 +16,11 @@ export class DataService {
   public path;
   public user = {};
   public type = 'realtime';
+  public fieldSettings = {};
 
   private resultsSubject = new BehaviorSubject<any[]>([]);
   private fieldsSubject = new BehaviorSubject<any[]>([]);
   private fields: Map<string, any>;
-  private fieldSettings = {};
   public fieldsList = [];
 
   constructor(private realtime: RealtimeService, private firestore: FirestoreService, private util: UtilService) { }
@@ -90,16 +90,6 @@ export class DataService {
       return this.util.isDate(val);
     } else {
       return false;
-    }
-  }
-
-  getFieldSettings() {
-    const fields = localStorage.getItem(this.path + '-fields');
-    if (fields !== undefined && fields !== null) {
-      const fieldsArray = JSON.parse(fields);
-      for (const f of fieldsArray) {
-        this.fieldSettings[f.name] = f;
-      }
     }
   }
 
@@ -194,21 +184,23 @@ export class DataService {
         let field;
         if (typeof value !== 'object') {
           let isDate = this.util.isDate(result[key]);
+          let isCurrency = false;
           if (this.fieldSettings[key] !== undefined) {
             isDate = this.fieldSettings[key].isDate;
+            isCurrency = this.fieldSettings[key].isCurrency || false;
           }
-          field = {name: key, value: result[key], isDate: isDate, parent: parent, collection: collection};
+          field = {name: key, value: result[key], isDate: isDate, isCurrency: isCurrency, parent: parent, collection: collection};
           fields.push(field);
           fieldMap[key] = field;
         } else {
           if (result.path === undefined) {
             const child = result[key];
             if (child.path === undefined) {
-              field = {name: key, value: result[key], isDate: false, isObject: true, children: this.getFields(child, key).list};
+              field = {name: key, value: result[key], isDate: false, isCurrency: false, isObject: true, children: this.getFields(child, key).list};
               fields.push(field);
               fieldMap[key] = field;
             } else {
-              field = {name: key, value: result[key], isDate: false, isObject: true, children: [], isRef: true};
+              field = {name: key, value: result[key], isDate: false, isCurrency: false, isObject: true, children: [], isRef: true};
               fields.push(field);
               fieldMap[key] = field;
               // doc referenced in another collection

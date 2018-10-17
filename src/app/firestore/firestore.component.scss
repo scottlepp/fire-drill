@@ -40,6 +40,9 @@ section {
   .sort {
     position: relative;
     display: inline-block;
+    .more {
+      min-width: 0;
+    }
     > div {
       position: absolute;
       background: #fff;
@@ -51,10 +54,22 @@ section {
       min-width: 5rem;
       // visibility: hidden;
       z-index: 1000;
+      right: 0;
       &:after {
         content: "";
         display: table;
         clear: both;
+      }
+      .mat-button {
+        line-height: 20px;
+        text-align: left;
+        .mat-button-focus-overlay {
+          // background-color: transparent !important;
+          opacity: 0 !important;
+        }
+        &:focus {
+          opacity: 0 !important;
+        }
       }
     }
     ul {
@@ -140,10 +155,16 @@ section {
     }
   }
   &:hover {
-    background-color: rgba(0,0,0,.12);
+    // background-color: rgba(0,0,0,.12);
   }
 }
 
 input[type="file"] {
   display: none;
+}
+
+@media print {
+  .drill {
+    display: none;
+  }
 }

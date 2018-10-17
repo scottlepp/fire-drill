@@ -27,6 +27,7 @@ export class FirestoreComponent implements OnInit {
   fieldSettings = {};
   sort = {show: false, fields: []};
   view = {show: false, value: 'card', types: [{name: 'card', selected: false}, {name: 'table', selected: false}]};
+  options = {show: false};
 
   constructor(
     private data: DataService,
@@ -53,6 +54,7 @@ export class FirestoreComponent implements OnInit {
     this.working = true;
     const limit = parseInt(this.limit, 10);
     const sortField = this.sort.fields.find(f => f.selected);
+    this.data.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
     this.data.fetch(this.path, this.filter, limit, sortField).subscribe(results => {
       this.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
       this.results = results;
@@ -92,6 +94,10 @@ export class FirestoreComponent implements OnInit {
     this.sort.show = !this.sort.show;
   }
 
+  toggleOptions() {
+    this.options.show = !this.options.show;
+  }
+
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (event.target.innerText !== 'Sort') {
@@ -102,6 +108,11 @@ export class FirestoreComponent implements OnInit {
     if (event.target.innerText !== 'View') {
       if (this.view.show) {
         this.view.show = false;
+      }
+    }
+    if (event.target.innerText !== 'more_vert') {
+      if (this.options.show) {
+        this.options.show = false;
       }
     }
   }
@@ -190,10 +201,12 @@ export class FirestoreComponent implements OnInit {
   }
 
   export() {
+    this.options.show = false;
     this.csv.export(this.results);
   }
 
   importSelected(files: FileList) {
+    this.options.show = false;
     if (files && files.length > 0) {
       const file: File = files.item(0);
       const reader: FileReader = new FileReader();
@@ -203,6 +216,13 @@ export class FirestoreComponent implements OnInit {
         this.doImport(csv);
       };
     }
+  }
+
+  print() {
+    this.options.show = false;
+    setTimeout(() => {
+      window.print();
+    }, 50);
   }
 
   onSelect(selected) {
@@ -219,7 +239,7 @@ export class FirestoreComponent implements OnInit {
   openSettings(): void {
     const dialogRef = this.dialog.open(SettingsComponent, {
       width: '300px',
-      data: {results: this.results, path: this.path}
+      data: {results: this.results, path: this.path, kind: 'fs'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -233,14 +253,18 @@ export class FirestoreComponent implements OnInit {
 
   // update the results so the date fiels show as dates
   private updateResultsDataTypes() {
-    this.fieldSettings = this.settings.getFieldSettings(this.path, 'rt');
+    this.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
+    this.data.fieldSettings = this.fieldSettings;
     for (const item of this.results) {
       for (const f of item.fields) {
         if (this.fieldSettings[f.name] !== undefined) {
           f.isDate = this.fieldSettings[f.name].isDate;
+          f.isCurrency = this.fieldSettings[f.name].isCurrency;
         }
       }
     }
+    // so a change event triggers on child components with results as an input
+    this.results = this.results.slice();
   }
 
   private doImport(csv) {

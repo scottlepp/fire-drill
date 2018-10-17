@@ -26,12 +26,17 @@
           <div class="dropdown-item" [ngClass]="{'selected': f.selected}" *ngFor="let f of fields">
             <mat-checkbox [(ngModel)]="f.selected" (ngModelChange)="onFieldPick(f)">{{f.name}}</mat-checkbox>
           </div>
+          <div class="divider"></div>
+          <div class="dropdown-item">
+            <mat-checkbox [(ngModel)]="showTotals">Totals</mat-checkbox>
+          </div>
         </div>
       </th>
       <td mat-cell *matCellDef="let element"> 
         <div *ngIf="!element.$edit">
           <a (click)="onFilter(element.map[column])" href="javascript:;" *ngIf="!element.map[column].isDate && !element.map[column].isObject">
-            <span>{{element.item[column]}}</span>
+            <span *ngIf="!element.map[column].isCurrency">{{element.item[column]}}</span>
+            <span *ngIf="element.map[column].isCurrency">{{element.item[column] | currency}}</span>
           </a>
           <span *ngIf="element.map[column].isDate && !element.map[column].isObject">
             <a (click)="onFilter(element.map[column])" href="javascript:;">{{element.item[column] | date:'shortDate'}}</a>
@@ -60,10 +65,16 @@
           </a>
         </div>
       </td>
+      <td mat-footer-cell *matFooterCellDef [hidden]="!showTotals"> 
+        <span *ngIf="i===0">Total</span>
+        <span *ngIf="!fieldMap[column].isCurrency">{{totals[column]}}</span>
+        <span *ngIf="fieldMap[column].isCurrency">{{totals[column] | currency}}</span>
+      </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    <tr mat-footer-row *matFooterRowDef="columnsToDisplay" [hidden]="!showTotals"></tr>
   </table>
 
   <!-- <mat-paginator #paginator

@@ -103,18 +103,40 @@
               </div>
             </div>
           </span>
-          <button mat-button (click)="export()" [disabled]="results.length === 0">Export</button>
-          <span>
+          <!-- TODO - remove - moved to more menu -->
+          <!-- <button mat-button (click)="export()" [disabled]="results.length === 0">Export</button> -->
+          <!-- <span>
             <label class="custom-file-upload mat-button" [ngClass]="{'disabled': path === '' || path == undefined}">
               <input type="file" accept=".csv" [disabled]="!path" (change)="importSelected($event.target.files)">
                 Import
             </label>
-          </span>
+          </span> -->
           <button *ngIf="selected.length > 0" mat-button color="warn" (click)="delete()">Delete</button>
+          <span class="sort">
+            <button class="more" mat-button (click)="toggleOptions()" [disabled]="results.length === 0">
+              <mat-icon aria-label="Settings">more_vert</mat-icon>
+            </button>
+            <div [hidden]="!options.show" class="mat-elevation-z8">
+              <div class="dropdown-item">
+                <span>
+                  <label class="custom-file-upload mat-button" [ngClass]="{'disabled': path === '' || path == undefined}">
+                    <input type="file" accept=".csv" [disabled]="!path" (change)="importSelected($event.target.files)">
+                      Import
+                  </label>
+                </span>
+              </div>
+              <div class="dropdown-item">
+                <button mat-button (click)="export()" [disabled]="results.length === 0">Export</button>
+              </div>
+              <div class="dropdown-item">
+                <button mat-button (click)="print()" [disabled]="results.length === 0">Print</button>
+              </div>
+            </div>
+          </span>
         </span>
       </p>
       <!-- Results -->
-      <section>
+      <section class="results">
         <ff-card-results *ngIf="view.value ==='card'" [results]="results" (filter)="onFilter($event)" (selected)="onSelect($event)"></ff-card-results>
         <ff-table-results *ngIf="view.value ==='table'" [results]="results" (filter)="onFilter($event)" ></ff-table-results>
       </section>
