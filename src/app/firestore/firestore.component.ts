@@ -212,7 +212,7 @@ export class FirestoreComponent implements OnInit {
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
       reader.onload = (e) => {
-        const csv: string = reader.result;
+        const csv: any = reader.result;
         this.doImport(csv);
       };
     }
