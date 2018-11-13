@@ -1,0 +1,55 @@
+<section class="generate">
+  <mat-form-field class="path">
+    <input matInput [(ngModel)]="collection" placeholder="Collection" (keyup.enter)="generate()">
+  </mat-form-field>
+  <button (click)="generate()" mat-raised-button color="primary" [disabled]="!collection">Generate Form</button>
+  <button (click)="openSettings()" mat-icon-button [disabled]="!collection">
+    <mat-icon aria-label="Settings">settings</mat-icon>
+  </button>
+</section>
+
+<section>
+  <p class="actions">
+    <span>
+      <button mat-button [disabled]="fields.length < 1" (click)="copy()">Copy</button>
+    </span>
+  </p>
+</section>
+
+<section>
+  <form class="container" cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="show">
+    <div class="field" *ngFor="let field of fields; let i = index" cdkDrag>
+      <div class="placeholder" *cdkDragPlaceholder>
+        
+      </div>
+      <i class="material-icons">
+        drag_indicator
+      </i>
+      <mat-form-field *ngIf="!field.isDate && !field.isObject && !field.isBoolean">
+        <input matInput [(ngModel)]="editFields[i].value" [placeholder]="field.name" (focus)="onFocus(item)" [name]="field.name" autocomplete="off">
+      </mat-form-field>
+      <div *ngIf="!field.isDate && !field.isObject && field.isBoolean" class="pad-bottom">
+        <mat-checkbox [(ngModel)]="editFields[i].value" [name]="field.name">{{field.name}}</mat-checkbox>
+      </div>
+      <mat-form-field *ngIf="field.isDate">
+        <input matInput [(ngModel)]="editFields[i].value" [matDatepicker]="date" [placeholder]="field.name" (dateChange)="dateChange(i, $event)" (focus)="onFocus(item)" [name]="field.name">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="field.isObject && !field.isRef" class="child-edit">
+        <span class="label">{{field.name}}</span>
+        <div *ngFor="let child of field.children; let j = index">
+          <mat-form-field *ngIf="!child.isDate">
+            <input matInput [(ngModel)]="editFields[i].children[j].value" [placeholder]="child.name" (focus)="onFocus(item)" [name]="child.name" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field *ngIf="child.isDate">
+            <input matInput [(ngModel)]="editFields[i].children[j].value" [matDatepicker]="date" [placeholder]="child.name" (dateChange)="dateChangeChild(i, j, $event)" (focus)="onFocus(item)" [name]="field.name">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <!-- <button (click)="save()" mat-raised-button color="primary" *ngIf="keys(item).length > 0">Save</button> -->
+  </form>
+</section>

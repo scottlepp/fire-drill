@@ -25,6 +25,10 @@ export class UtilService {
     }
   }
 
+  isBoolean(val) {
+    return val === 'true' || val === 'false' || val === true || val === false;
+  }
+
   getTrueValue(val) {
     if (!isNaN(val) && typeof val !== 'number') {
       if (val.includes('.')) {

@@ -18,6 +18,12 @@
       Drill
     </a>
   </span>
+  <span class="nav-link" routerLinkActive="active">
+      <a routerLink="/forms" routerLinkActive="active"
+      type="button" aria-label="Forms" mat-button>
+      Forms
+    </a>
+  </span>
   <span class="spacer"></span>
   <a routerLink="/user" *ngIf="user.email" class="logout">
     <mat-icon [matTooltip]="user.email" matTooltipPosition="before">verified_user</mat-icon>

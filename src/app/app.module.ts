@@ -18,11 +18,14 @@ import { SettingsComponent } from './drill/settings/settings.component';
 import { FirestoreComponent } from './firestore/firestore.component';
 import { RealtimeComponent } from './realtime/realtime.component';
 import { UserComponent } from './user/user.component';
+import { FormsComponent } from './forms/forms.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/drill', pathMatch: 'full' },
   { path: 'connect', component: SetupComponent },
   { path: 'drill', component: DrillComponent},
+  { path: 'forms', component: FormsComponent},
   { path: 'edit', component: EditComponent},
   { path: 'user', component: UserComponent}
 ];
@@ -39,7 +42,8 @@ const appRoutes: Routes = [
     SettingsComponent,
     FirestoreComponent,
     RealtimeComponent,
-    UserComponent
+    UserComponent,
+    FormsComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,8 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatTabsModule
+    MatTabsModule,
+    DragDropModule
   ],
   entryComponents: [SettingsComponent],
   providers: [],

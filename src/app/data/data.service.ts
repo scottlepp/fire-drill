@@ -184,12 +184,13 @@ export class DataService {
         let field;
         if (typeof value !== 'object') {
           let isDate = this.util.isDate(result[key]);
+          const isBoolean = this.util.isBoolean(result[key]);
           let isCurrency = false;
           if (this.fieldSettings[key] !== undefined) {
             isDate = this.fieldSettings[key].isDate;
             isCurrency = this.fieldSettings[key].isCurrency || false;
           }
-          field = {name: key, value: result[key], isDate: isDate, isCurrency: isCurrency, parent: parent, collection: collection};
+          field = {name: key, value: result[key], isDate: isDate, isCurrency: isCurrency, parent: parent, collection: collection, isBoolean: isBoolean};
           fields.push(field);
           fieldMap[key] = field;
         } else {

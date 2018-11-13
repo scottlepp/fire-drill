@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit {
         if (this.isInteger(field.value) && field.value.toString().length > 10) {
           const isDate = stored[field.name] !== undefined ? stored[field.name].isDate : field.isDate;
           this.fields.push({name: field.name, isDate: isDate});
-        } else if (!isNaN(field.value)) {
+        } else if (!isNaN(field.value) && !field.isBoolean) {
           const isCurrency = stored[field.name] !== undefined ? stored[field.name].isCurrency : field.isCurrency;
           this.currency.push({name: field.name, isCurrency: isCurrency});
         }
