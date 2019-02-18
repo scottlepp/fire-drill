@@ -34,11 +34,11 @@
       </th>
       <td mat-cell *matCellDef="let element"> 
         <div *ngIf="!element.$edit">
-          <a (click)="onFilter(element.map[column])" href="javascript:;" *ngIf="!element.map[column].isDate && !element.map[column].isObject">
+          <a (click)="onFilter(element.map[column])" href="javascript:;" *ngIf="element.map[column] && !element.map[column].isDate && !element.map[column].isObject">
             <span *ngIf="!element.map[column].isCurrency">{{element.item[column]}}</span>
             <span *ngIf="element.map[column].isCurrency">{{element.item[column] | currency}}</span>
           </a>
-          <span *ngIf="element.map[column].isDate && !element.map[column].isObject">
+          <span *ngIf="element.map[column] && element.map[column].isDate && !element.map[column].isObject">
             <a (click)="onFilter(element.map[column])" href="javascript:;">{{element.item[column] | date:'shortDate'}}</a>
           </span>
           <a href="javascript:;" class="toggle-edit" *ngIf="i == displayedColumns.length-1" (click)="edit(element)">
@@ -46,10 +46,10 @@
           </a>
         </div>
         <div *ngIf="element.$edit">
-          <mat-form-field *ngIf="!element.map[column].isDate && !element.map[column].isObject">
+          <mat-form-field *ngIf="element.map[column] && !element.map[column].isDate && !element.map[column].isObject">
             <input matInput [(ngModel)]="element.editFields[column].value" (focus)="onFocus(element)">
           </mat-form-field>
-          <mat-form-field *ngIf="element.map[column].isDate">
+          <mat-form-field *ngIf="element.map[column] && element.map[column].isDate">
             <input matInput [(ngModel)]="element.editFields[column].value" [matDatepicker]="date" (dateChange)="dateChange(element, column, $event)" (focus)="onFocus(element)">
             <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
             <mat-datepicker #date></mat-datepicker>
