@@ -23,8 +23,9 @@
     "@angular/platform-browser": "^7.0.4",
     "@angular/platform-browser-dynamic": "^7.0.4",
     "@angular/router": "^7.0.4",
+    "codelyzer": "^6.0.1",
     "core-js": "^2.5.4",
-    "firebase": "^5.5.8",
+    "firebase": "^8.0.2",
     "moment": "^2.22.2",
     "rxjs": "^6.3.3",
     "zone.js": "~0.8.26"
@@ -38,7 +39,6 @@
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "~8.9.4",
     "adm-zip": ">=0.4.11",
-    "codelyzer": "~4.2.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
