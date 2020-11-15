@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { BehaviorSubject } from 'rxjs';
 import { RealtimeService } from './realtime.service';
 import { FirestoreService} from './firestore.service';

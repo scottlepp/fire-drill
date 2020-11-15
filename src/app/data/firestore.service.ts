@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { UtilService } from './util.service';
 
@@ -82,8 +82,8 @@ export class FirestoreService {
 
   private getCollection(path) {
     const firestore = firebase.firestore();
-    const settings = {/* your settings... */ timestampsInSnapshots: true};
-    firestore.settings(settings);
+    // const settings = {/* your settings... */ timestampsInSnapshots: true};
+    // firestore.settings(settings);
     return firestore.collection(path);
   }
 

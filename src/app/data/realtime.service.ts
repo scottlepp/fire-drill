@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { BehaviorSubject, Subject, forkJoin, Observable } from 'rxjs';
 import { UtilService } from './util.service';
 import { map } from 'rxjs/operators';

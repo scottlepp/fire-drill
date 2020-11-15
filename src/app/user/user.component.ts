@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
-import { MatSnackBar } from '@angular/material';
+import firebase from 'firebase';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import { DataService } from '../data/data.service';
 

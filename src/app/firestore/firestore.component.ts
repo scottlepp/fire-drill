@@ -2,10 +2,10 @@ import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { DataService } from '../data/data.service';
 import { CsvService } from '../data/csv.service';
 import { SettingsService } from '../settings/settings.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SettingsComponent } from '../drill/settings/settings.component';
 import * as mom from 'moment';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 
 @Component({
