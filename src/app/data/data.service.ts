@@ -196,7 +196,11 @@ export class DataService {
         } else {
           if (result.path === undefined) {
             const child = result[key];
-            if (child.path === undefined) {
+            if (value['seconds'] !== undefined && value['nanoseconds'] !== undefined) {
+              field = {name: key, value: value.toDate(), isDate: true, isCurrency: false, isObject: false, parent, collection};
+              fields.push(field);
+              fieldMap[key] = field;
+            } else if (child.path === undefined) {
               field = {name: key, value: result[key], isDate: false, isCurrency: false, isObject: true, children: this.getFields(child, key).list};
               fields.push(field);
               fieldMap[key] = field;
