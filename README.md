@@ -2,7 +2,7 @@
 
 Find, Edit, Add, Remove, Import, Export, and Report on your Firebase data
 
-Demo: https://firedrill.co
+Demo: https://firedrill-74829.firebaseapp.com/
 
 ## Development server
 
