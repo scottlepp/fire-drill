@@ -6,7 +6,25 @@ import { SetupComponent } from './setup/setup.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatSelectModule, MatExpansionModule, MatInputModule, MatProgressBarModule, MatSnackBarModule, MatDatepickerModule, MatTooltipModule, MatCheckboxModule, MatDialogModule, MatTabsModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule} from '@angular/material/button';
+import { MatSidenavModule} from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule} from '@angular/material/list';
+import { MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule} from '@angular/material/sort';
+import { MatCardModule} from '@angular/material/card';
+import { MatSelectModule} from '@angular/material/select';
+import { MatExpansionModule} from '@angular/material/expansion';
+import { MatInputModule} from '@angular/material/input';
+import { MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatCheckboxModule} from '@angular/material/checkbox';
+import { MatDialogModule} from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule, Routes } from '@angular/router';
 import { ResultsComponent } from './table-results/table-results.component';
 import { CardResultsComponent } from './card-results/card-results.component';
@@ -20,6 +38,7 @@ import { RealtimeComponent } from './realtime/realtime.component';
 import { UserComponent } from './user/user.component';
 import { FormsComponent } from './forms/forms.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UpdateComponent } from './edit/update/update.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/drill', pathMatch: 'full' },
@@ -43,7 +62,8 @@ const appRoutes: Routes = [
     FirestoreComponent,
     RealtimeComponent,
     UserComponent,
-    FormsComponent
+    FormsComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +74,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -73,7 +93,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     DragDropModule
   ],
-  entryComponents: [SettingsComponent],
+  entryComponents: [SettingsComponent, UpdateComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

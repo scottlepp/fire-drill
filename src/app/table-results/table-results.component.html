@@ -39,7 +39,7 @@
             <span *ngIf="element.map[column].isCurrency">{{element.item[column] | currency}}</span>
           </a>
           <span *ngIf="element.map[column] && element.map[column].isDate && !element.map[column].isObject">
-            <a (click)="onFilter(element.map[column])" href="javascript:;">{{element.item[column] | date:'shortDate'}}</a>
+            <a (click)="onFilter(element.map[column])" href="javascript:;">{{element.item[column].toDate() | date:'shortDate'}}</a>
           </span>
           <a href="javascript:;" class="toggle-edit" *ngIf="i == displayedColumns.length-1" (click)="edit(element)">
             <i class="material-icons">edit</i>

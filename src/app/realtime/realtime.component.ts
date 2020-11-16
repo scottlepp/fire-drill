@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data/data.service';
 import * as mom from 'moment';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SettingsComponent } from '../drill/settings/settings.component';
 import { CsvService } from '../data/csv.service';
 import { UtilService } from '../data/util.service';
 import { SettingsService } from '../settings/settings.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 
 @Component({

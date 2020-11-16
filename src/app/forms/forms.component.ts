@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data/data.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SettingsComponent } from '../drill/settings/settings.component';
 import { SettingsService } from '../settings/settings.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';

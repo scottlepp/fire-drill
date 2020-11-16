@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { BehaviorSubject } from 'rxjs';
 import { RealtimeService } from './realtime.service';
 import { FirestoreService} from './firestore.service';
@@ -77,6 +77,18 @@ export class DataService {
   add(item): PromiseLike<any> {
     const clone = JSON.parse(JSON.stringify(item));
     delete clone.key;
+    const keys = Object.keys(clone);
+    for (const key of keys) {
+      const val = clone[key];
+      if (typeof val === 'object') {
+        if (val.seconds !== undefined && val.nanoseconds !== undefined && val.toDate === undefined) {
+          // timestamp converted to object, make it a timestamp again
+          var d = new Date(0);
+          d.setUTCSeconds(val.seconds);
+          clone[key] = this.getTimestamp(d);
+        }
+      }
+    }
     return this.database().add(clone, this.path);
   }
 
@@ -143,11 +155,28 @@ export class DataService {
     });
   }
 
+  batchUpdate(updates: Array<any>) {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    for (const update of updates) {
+      const record = db.collection(update.collection).doc(update.item.key);
+      const doc = {...update.item };
+      delete doc.key;
+      batch.update(record, doc);
+    }
+    return batch.commit();
+  }
+
   private bindFormField(item, field) {
     if (field.isDate) {
       if (field.newValue !== undefined) {
         item[field.name] = field.newValue;
         field.value = item[field.name];  // reset back to numeric value from moment object
+        if (!isNaN(field.value)) {
+          // if its numeric make it a timestamp
+          const date = new Date(field.value);
+          item[field.name] = this.getTimestamp(date);
+        }
         delete field.newValue;
       } else {
         // the date picker binding changes this value to a Date even when unchanged
@@ -196,7 +225,17 @@ export class DataService {
         } else {
           if (result.path === undefined) {
             const child = result[key];
-            if (child.path === undefined) {
+            if (value['seconds'] !== undefined && value['nanoseconds'] !== undefined) {
+              let dateValue = value;
+              if (value.toDate === undefined) {
+                var d = new Date(0);
+                d.setUTCSeconds(value.seconds);
+                dateValue = this.getTimestamp(d);
+              }
+              field = {name: key, value: dateValue.toDate().getTime(), isDate: true, isCurrency: false, isObject: false, parent, collection};
+              fields.push(field);
+              fieldMap[key] = field;
+            } else if (child.path === undefined) {
               field = {name: key, value: result[key], isDate: false, isCurrency: false, isObject: true, children: this.getFields(child, key).list};
               fields.push(field);
               fieldMap[key] = field;
@@ -216,6 +255,14 @@ export class DataService {
       }
     }
     return {list: fields, map: fieldMap};
+  }
+
+  public getTimestamp(date) {
+    return this.firestore.getTimestamp(date);
+  }
+
+  public getDeleteField() {
+    return firebase.firestore.FieldValue.delete();
   }
 
   private setFields(list) {

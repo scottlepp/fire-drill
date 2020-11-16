@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { UtilService } from './util.service';
 
@@ -82,8 +82,8 @@ export class FirestoreService {
 
   private getCollection(path) {
     const firestore = firebase.firestore();
-    const settings = {/* your settings... */ timestampsInSnapshots: true};
-    firestore.settings(settings);
+    // const settings = {/* your settings... */ timestampsInSnapshots: true};
+    // firestore.settings(settings);
     return firestore.collection(path);
   }
 
@@ -101,7 +101,10 @@ export class FirestoreService {
 
   private applyFilter(filter, collection) {
     if (filter.field !== undefined) {
-      const filterValue = this.util.getTrueValue(filter.val);
+      let filterValue = this.util.getTrueValue(filter.val);
+      if (filter.isDate) {
+        filterValue = new Date(filterValue);
+      }
       if (filter.oper === 'eq' && !filter.isDate) {
         return collection.where(filter.field, '==', filterValue);
       } else if (filter.oper === 'bt' || (filter.oper === 'eq' && filter.isDate)) {
@@ -127,6 +130,10 @@ export class FirestoreService {
     return returnArr;
   }
 
+  getTimestamp(date) {
+    return firebase.firestore.Timestamp.fromDate(date);
+  }
+  
   // private transformResults(results) {
   //   const items = [];
   //   for (const result of results) {

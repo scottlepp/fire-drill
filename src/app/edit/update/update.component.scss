@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  h3 {
+    margin: 0;
+    line-height: 35px;
+  }
+}
+
+section {
+  mat-form-field {
+    margin-right: 15px;
+    &:last-child {
+      margin-right: unset;
+    }
+  }
+  &:last-child {
+    margin-right: unset;
+  }
+}
+
+.field {
+  text-align: center;
+}
+
+.datatype {
+  width: 100px;
+}
