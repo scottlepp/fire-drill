@@ -7,6 +7,7 @@ import { SettingsComponent } from '../drill/settings/settings.component';
 import * as mom from 'moment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
+import { UpdateComponent } from '../edit/update/update.component';
 
 @Component({
   selector: 'ff-firestore',
@@ -234,6 +235,49 @@ export class FirestoreComponent implements OnInit {
       this.selected = [];
       this.fetch();
     });
+  }
+
+  update() {
+    const dialogRef = this.dialog.open(UpdateComponent, {
+      width: '600px',
+      data: {results: this.results, path: this.path, kind: 'fs'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.fields === undefined) {
+        return;
+      }
+      const fields = result.fields;
+      if (fields.length > 0) {
+        this.doUpdateResults(fields).then(() => {
+          this.fetch();
+        })
+      }
+    });
+  }
+
+  doUpdateResults(fields: Array<any>) {
+    for (const f of fields) {
+      if (f.datatype === 'integer') {
+        f.value = parseInt(f.value, 10);
+      } else if (f.datatype === 'float') {
+        f.value = parseFloat(f.value);
+      } else if (f.datatype === 'date') {
+        f.value = this.data.getTimestamp(f.value.toDate());
+      }
+    }
+    const updates = this.results.map(r => {
+      r.collection = this.path;
+      const item = r.item;
+      for (const f of fields) {
+        item[f.name] = f.value;
+        if (f.value == undefined) {
+          item[f.name] = this.data.getDeleteField();
+        }
+      }
+      return r;
+    });
+    return this.data.batchUpdate(updates);
   }
 
   openSettings(): void {

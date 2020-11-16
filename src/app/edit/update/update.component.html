@@ -1,0 +1,35 @@
+<section class="header">
+  <h3>Update Results</h3>
+  <button (click)="add()" mat-raised-button color="primary">Add Field</button>
+</section>
+
+<mat-dialog-content>
+  <form class="container">
+    <section *ngFor="let field of fields" class="field">
+      <mat-form-field class="example-full-width" >
+        <input matInput placeholder="Field Name" [(ngModel)]="field.name" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <mat-form-field *ngIf="field.datatype != 'date'">
+        <input matInput placeholder="Field Value" [(ngModel)]="field.value" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <mat-form-field *ngIf="field.datatype == 'date'">
+        <input matInput placeholder="Field Value" [(ngModel)]="field.value" [matDatepicker]="date" (dateChange)="dateChange(field, $event)" [ngModelOptions]="{standalone: true}">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="datatype">
+        <mat-select [(value)]="field.datatype" placeholder="Data Type" (selectionChange)="onChangeDatatype($event.value, field)">
+          <mat-option value="string">String</mat-option>
+          <mat-option value="integer">Integer</mat-option>
+          <mat-option value="decimal">Decimal</mat-option>
+          <mat-option value="date">Date</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">Close</button>
+  <button mat-button (click)="save()" [disabled]="fields.length === 0">Save</button>
+</mat-dialog-actions>

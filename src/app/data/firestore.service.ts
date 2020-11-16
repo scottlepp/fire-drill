@@ -130,6 +130,10 @@ export class FirestoreService {
     return returnArr;
   }
 
+  getTimestamp(date) {
+    return firebase.firestore.Timestamp.fromDate(date);
+  }
+  
   // private transformResults(results) {
   //   const items = [];
   //   for (const result of results) {

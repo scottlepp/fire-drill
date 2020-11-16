@@ -38,6 +38,7 @@ import { RealtimeComponent } from './realtime/realtime.component';
 import { UserComponent } from './user/user.component';
 import { FormsComponent } from './forms/forms.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UpdateComponent } from './edit/update/update.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/drill', pathMatch: 'full' },
@@ -61,7 +62,8 @@ const appRoutes: Routes = [
     FirestoreComponent,
     RealtimeComponent,
     UserComponent,
-    FormsComponent
+    FormsComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +93,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     DragDropModule
   ],
-  entryComponents: [SettingsComponent],
+  entryComponents: [SettingsComponent, UpdateComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
