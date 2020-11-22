@@ -30,7 +30,7 @@ export class UtilService {
   }
 
   getTrueValue(val) {
-    if (!isNaN(val) && typeof val !== 'number') {
+    if (!isNaN(val) && typeof val !== 'number' && !this.isBoolean(val)) {
       if (val.includes('.')) {
         return parseFloat(val);
       } else {
