@@ -168,3 +168,10 @@ input[type="file"] {
     display: none;
   }
 }
+
+.container {
+  padding: 0 40px 0 40px;
+  mat-form-field {
+    width: 100%;
+  }
+}

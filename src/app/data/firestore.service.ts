@@ -100,6 +100,13 @@ export class FirestoreService {
   // }
 
   private applyFilter(filter, collection) {
+    if (Array.isArray(filter)) {
+      let chain = collection;
+      for (const f of filter) {
+        chain = this.applyFilter(f, chain);
+      }
+      return chain;
+    }
     if (filter.field !== undefined) {
       let filterValue = this.util.getTrueValue(filter.val);
       if (filter.isDate) {
@@ -107,13 +114,21 @@ export class FirestoreService {
       }
       if (filter.oper === 'eq' && !filter.isDate) {
         return collection.where(filter.field, '==', filterValue);
+      } else if (filter.oper === 'ne' && !filter.isDate) {
+          return collection.where(filter.field, '!=', filterValue);
       } else if (filter.oper === 'bt' || (filter.oper === 'eq' && filter.isDate)) {
-        const endValue = this.util.getTrueValue(filter.val2);
+        let endValue = this.util.getTrueValue(filter.val2);
+        if (filter.isDate) {
+          endValue = new Date(endValue);
+        }
         return collection.where(filter.field, '>=', filterValue).where(filter.field, '<=', endValue);
       } else if (filter.oper === 'gt') {
         return collection.where(filter.field, '>', filterValue);
       } else if (filter.oper === 'lt') {
         return collection.where(filter.field, '<', filterValue);
+      } else {
+        const op = filter.oper === '=' ? '==' : filter.oper;
+        return collection.where(filter.field, op, filterValue);
       }
     } else {
       return collection;

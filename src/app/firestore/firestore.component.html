@@ -13,6 +13,7 @@
       <mat-form-field *ngIf="filter.field" class="oper">
         <mat-select [(value)]="filter.oper" placeholder="Type">
           <mat-option value="eq">Equals</mat-option>
+          <mat-option value="ne">Not Equals</mat-option>
           <mat-option value="gt">Greater Than</mat-option>
           <mat-option value="lt">Less Than</mat-option>
           <mat-option value="bt">Between</mat-option>
@@ -140,6 +141,15 @@
       </p>
       <!-- Results -->
       <section class="results">
+        <div class="container">
+          <mat-form-field class="text-filter">
+            <mat-label>Filter</mat-label>
+            <input matInput [(ngModel)]="textFilter" (keyup.enter)="drill()" autocomplete="off">
+            <button mat-button *ngIf="textFilter" matSuffix mat-icon-button aria-label="Clear" (click)="clearTextFilter()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
         <ff-card-results *ngIf="view.value ==='card'" [results]="results" (filter)="onFilter($event)" (selected)="onSelect($event)"></ff-card-results>
         <ff-table-results *ngIf="view.value ==='table'" [results]="results" (filter)="onFilter($event)" ></ff-table-results>
       </section>

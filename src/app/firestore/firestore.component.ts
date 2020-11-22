@@ -8,6 +8,7 @@ import * as mom from 'moment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import { UpdateComponent } from '../edit/update/update.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'ff-firestore',
@@ -29,6 +30,8 @@ export class FirestoreComponent implements OnInit {
   sort = {show: false, fields: []};
   view = {show: false, value: 'card', types: [{name: 'card', selected: false}, {name: 'table', selected: false}]};
   options = {show: false};
+  textFilter: string;
+  filters = [];
 
   constructor(
     private data: DataService,
@@ -53,10 +56,12 @@ export class FirestoreComponent implements OnInit {
 
   fetch() {
     this.working = true;
+    this.parseFilter();
     const limit = parseInt(this.limit, 10);
     const sortField = this.sort.fields.find(f => f.selected);
     this.data.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
-    this.data.fetch(this.path, this.filter, limit, sortField).subscribe(results => {
+    const filter = this.filters.length > 0 ? this.filters : this.filter;
+    this.data.fetch(this.path, filter, limit, sortField).subscribe(results => {
       this.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
       this.results = results;
       this.fields = this.data.fieldsList.length === 0 ? this.fields : this.data.fieldsList;
@@ -80,11 +85,40 @@ export class FirestoreComponent implements OnInit {
       this.working = false;
     }, error => {
       this.working = false;
-      const snackBarRef = this.snackBar.open('Permission Denied', 'Sign In', { duration: 10000 });
+      const snackBarRef = this.snackBar.open('Error', error.message, { duration: 10000 });
       snackBarRef.onAction().subscribe(( ) => {
         this.router.navigate(['user']);
       });
     });
+  }
+
+  parseFilter() {
+    let parts = [];
+    let op = 'or';
+    if (this.textFilter) {
+      let conj = 'AND';
+      let hasConj = this.textFilter.includes('AND');
+      if (!hasConj) {
+        conj = 'and';
+      }
+      parts = this.textFilter.split(conj);
+      const filters = [];
+      for (const part of parts) {
+        const fp = part.trim().split(' ');
+        const filter = {field: fp[0], oper: fp[1], val: fp[2], val2: undefined, isDate: false, dateVal: undefined}
+        filters.push(filter);
+      }
+      if (this.filter.field !== undefined) {
+        filters.push(this.filter);
+      }
+      this.filters = filters;
+    }
+  }
+
+  clearTextFilter() {
+    this.textFilter = undefined;
+    this.filters = [];
+    this.fetch();
   }
 
   toggleView() {
