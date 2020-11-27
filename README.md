@@ -2,13 +2,15 @@
 
 Find, Edit, Add, Remove, Import, Export, and Report on your Firebase data
 
-[Demo](https://firedrill-74829.firebaseapp.com/)
+[Demo](https://firedrill-74829.web.app/)
 
 #### Find: [How to Connect and Query Firebase Data](https://dev.to/scottlepp/introducing-firedrill---power-tools-for-firebase-g9f)
 
 #### Edit, Add, Remove, Import, Export: [How to Edit Firebase Data](https://dev.to/scottlepp/super-easy-firebase-data-editing-with-firedrill-4j9d)
 
 #### Reporting: [Tables and Reports](https://dev.to/scottlepp/firebase---tables--reports-4ibh)
+
+#### [Bulk Updates](https://dev.to/scottlepp/firebase-bulk-updates-with-firedrill-1e5g)
 
 #### Generating code: [Generating HTML/Angular Material Forms](https://dev.to/scottlepp/generating-beautiful-html-forms-with-firedrill-3hgp)
 
