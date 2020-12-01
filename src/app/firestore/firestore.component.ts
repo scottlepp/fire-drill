@@ -63,7 +63,15 @@ export class FirestoreComponent implements OnInit {
     const filter = this.filters.length > 0 ? this.filters : this.filter;
     this.data.fetch(this.path, filter, limit, sortField).subscribe(results => {
       this.fieldSettings = this.settings.getFieldSettings(this.path, 'fs');
-      this.results = results;
+      const sortedFields = results.map(res => {
+        res.fields = res.fields.sort(function(a, b) {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+        return res;
+      });
+      this.results = sortedFields;
       this.fields = this.data.fieldsList.length === 0 ? this.fields : this.data.fieldsList;
       if (!this.fields.includes(this.filter.field)) {
         this.fields.push(this.filter.field);
@@ -347,9 +355,37 @@ export class FirestoreComponent implements OnInit {
 
   private doImport(csv) {
     const items = this.csv.toJson(csv);
-    this.data.addAll(items).then(() => {
-      this.fetch();
-    });
+    if (items.length > 0) {
+      const item = items[0];
+      if (item.$key !== undefined) {
+        const updates = items.map(item => {
+          // fix boolean values and remove crlf
+          const keys = Object.keys(item);
+          for (const key of keys) {
+            let val = item[key];
+            if (val !== undefined && typeof val === 'string') {
+              val = val.replace(/(\r\n|\n|\r)/gm, "");
+            }
+            if (val === 'TRUE') {
+              item[key] = true;
+            } else {
+              item[key] = val;
+            }
+          }
+          return {
+            collection: this.path,
+            item: {...item, key: item.$key},
+          }
+        });
+        this.data.batchUpdate(updates).then(() => {
+          this.fetch();
+        });
+      } else {
+        this.data.addAll(items).then(() => {
+          this.fetch();
+        });
+      }
+    }
   }
 
 }

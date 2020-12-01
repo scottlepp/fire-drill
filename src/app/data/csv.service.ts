@@ -39,16 +39,28 @@ export class CsvService {
     const items = results;
     const replacer = (key, val) => val === null ? '' : val; // specify how you want to handle null values here
 
+    const byMostFields = items.sort((a, b) => {
+      return b.fields.length - a.fields.length;
+    });
+
+    const fields = [{name: '$key'}, ...byMostFields[0].fields];
+
     let value;
     const csv = items.map(row =>
-      row.fields.map(field => {
+      fields.map(field => {
+        if (field.name === '$key') {
+          return row.item.key;
+        }
         value = row.item[field.name];
+        if (value !== undefined && value.seconds !== undefined && value.nanoseconds !== undefined) {
+          return value.seconds;
+        }
         return JSON.stringify(value, replacer);
       }
       ).join(',')
     );
     const columnNames = [];
-    for (const col of results[0].fields) {
+    for (const col of fields) {
       columnNames.push(col.name);
     }
     csv.unshift(columnNames.join(','));

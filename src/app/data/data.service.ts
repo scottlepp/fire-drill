@@ -162,6 +162,7 @@ export class DataService {
       const record = db.collection(update.collection).doc(update.item.key);
       const doc = {...update.item };
       delete doc.key;
+      delete doc.$key;
       batch.update(record, doc);
     }
     return batch.commit();
