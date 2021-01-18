@@ -114,6 +114,12 @@ export class FirestoreComponent implements OnInit {
       for (const part of parts) {
         const fp = part.trim().split(' ');
         const filter = {field: fp[0], oper: fp[1], val: fp[2], val2: undefined, isDate: false, dateVal: undefined}
+        if (filter.val === "true") {
+          filter.val = true
+        }
+        if (filter.val === "false") {
+          filter.val = false
+        }
         filters.push(filter);
       }
       if (this.filter.field !== undefined) {
@@ -306,6 +312,8 @@ export class FirestoreComponent implements OnInit {
         f.value = parseFloat(f.value);
       } else if (f.datatype === 'date') {
         f.value = this.data.getTimestamp(f.value.toDate());
+      } else if (f.datatype === 'boolean') {
+        f.value = (f.value == 'true' || f.value === true);
       }
     }
     const updates = this.results.map(r => {
