@@ -24,7 +24,7 @@
     "@angular/router": "^11.0.0",
     "codelyzer": "^6.0.0",
     "core-js": "^2.5.4",
-    "firebase": "^8.0.2",
+    "firebase": "^10.9.0",
     "moment": "^2.29.4",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.0",
